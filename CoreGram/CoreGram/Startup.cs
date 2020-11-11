@@ -70,6 +70,7 @@ namespace CoreGram
             services.AddControllers();
 
             services.AddTransient(typeof(UserRepository));
+            services.AddTransient(typeof(UserProfileRepository));
 
         }
 
