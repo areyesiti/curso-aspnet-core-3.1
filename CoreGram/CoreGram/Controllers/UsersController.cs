@@ -20,7 +20,6 @@ namespace CoreGram.Controllers
         public UsersController(UserRepository repository)
         {            
             _repository = repository;
-            _repository.Inicializar();
         }
 
         [HttpGet]

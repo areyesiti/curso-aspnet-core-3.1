@@ -17,21 +17,6 @@ namespace CoreGram.Repositories
             _context = context;
         }
 
-        public void Inicializar()
-        {
-            if (_context.Users.Count() <= 0)
-            {
-                User[] users = new User[]
-                {
-                    new User { Login = "User1", Password = "User1", Email = "user1@mail.com"},
-                    new User { Login = "User2", Password = "User2", Email = "user2@mail.com"},
-                };
-
-                _context.Users.AddRange(users);
-                _context.SaveChanges();
-            }
-        }
-
         public async Task<IEnumerable<User>> GetAll()
         {
             return await _context.Users.ToListAsync();
