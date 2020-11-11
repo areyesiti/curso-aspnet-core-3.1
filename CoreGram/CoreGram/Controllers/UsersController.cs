@@ -7,116 +7,50 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CoreGram.Data;
 using CoreGram.Data.Models;
+using CoreGram.Repositories;
 
 namespace CoreGram.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
-    {
-        private readonly DataContext _context;
+    {        
+        private readonly UserRepository _repository;
 
-        public UsersController(DataContext context)
-        {
-            _context = context;
-
-            if (_context.Users.Count() <= 0)
-            {
-                User[] users = new User[]
-                {
-                    new User { Login = "User1", Password = "User1", Email = "user1@mail.com"},
-                    new User { Login = "User2", Password = "User2", Email = "user2@mail.com"},
-                };
-
-                _context.Users.AddRange(users);
-                _context.SaveChanges();
-            }
+        public UsersController(UserRepository repository)
+        {            
+            _repository = repository;
+            _repository.Inicializar();
         }
 
-        // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return Ok(await _repository.GetAll());
         }
 
-        // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
+            return Ok(await _repository.GetById(id));
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(await _repository.Update(id, user));
         }
-
-        // POST: api/Users
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
+        
+        [HttpPost]        
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return Ok(await _repository.Create(user));
         }
-
-        // DELETE: api/Users/5
+        
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return user;
-        }
-
-        private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
+            return Ok(await _repository.Delete(id));
         }
     }
 }
