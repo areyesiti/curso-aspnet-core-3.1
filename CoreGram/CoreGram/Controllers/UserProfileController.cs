@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreGram.Data.Dtos;
 using CoreGram.Data.Models;
 using CoreGram.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -21,19 +22,19 @@ namespace CoreGram.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserProfile>> GetById(int id)
+        public async Task<ActionResult<UserProfileDto>> GetById(int id)
         {
             return Ok(await _repository.GetById(id));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]UserProfile dto)
+        public async Task<ActionResult<UserProfileDto>> Update(int id, [FromBody]UserProfileDto dto)
         {
             return Ok(await _repository.Update(id, dto));
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> Delete(int id)
+        public async Task<ActionResult<UserProfileDto>> Delete(int id)
         {
             return Ok(await _repository.Delete(id));
         }

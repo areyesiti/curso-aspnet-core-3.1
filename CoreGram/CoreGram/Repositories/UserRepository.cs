@@ -49,7 +49,7 @@ namespace CoreGram.Repositories
             _context.Users.Add(model);
             await _context.SaveChangesAsync();
 
-            var result = await _context.Users.FindAsync(model);
+            var result = await _context.Users.FindAsync(model.Id);
 
             if (result == null)
             {
@@ -59,32 +59,33 @@ namespace CoreGram.Repositories
             return _mapper.Map<UserDto>(result);                    
         }
 
-        public async Task<User> Update(int id, User user)
+        public async Task<UserDto> Update(int id, UserDto dto)
         {
+            var model = _mapper.Map<User>(dto);
 
-            if (id != user.Id)
+            if (id != model.Id)
             {
                 throw new Exception("El id no coincide");
             }
 
-            _context.Entry(user).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.Entry(model).State = EntityState.Modified;
+            var result = await _context.SaveChangesAsync();
 
-            return user;
+            return _mapper.Map<UserDto>(result);
         }
 
-        public async Task<User> Delete(int id)
+        public async Task<UserDto> Delete(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var model = await _context.Users.FindAsync(id);
+            if (model == null)
             {
                 throw new Exception("No se ha encontrado el usuario");
             }
 
-            _context.Users.Remove(user);
+            _context.Users.Remove(model);
             await _context.SaveChangesAsync();
 
-            return user;
+            return _mapper.Map<UserDto>(model);
         }
     }
 }

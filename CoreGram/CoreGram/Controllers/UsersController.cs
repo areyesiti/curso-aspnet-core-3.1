@@ -36,19 +36,19 @@ namespace CoreGram.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<ActionResult<UserDto>> PutUser(int id, [FromBody]UserDto dto)
         {
-            return Ok(await _repository.Update(id, user));
+            return Ok(await _repository.Update(id, dto));
         }
         
         [HttpPost]        
-        public async Task<ActionResult<UserDto>> PostUser(UserDto dto)
+        public async Task<ActionResult<UserDto>> PostUser([FromBody]UserDto dto)
         {
             return Ok(await _repository.Create(dto));
         }
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
+        public async Task<ActionResult<UserDto>> DeleteUser(int id)
         {
             return Ok(await _repository.Delete(id));
         }
