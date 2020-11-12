@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CoreGram.Data;
 using CoreGram.Data.Models;
 using CoreGram.Repositories;
+using CoreGram.Data.Dtos;
 
 namespace CoreGram.Controllers
 {
@@ -23,13 +24,13 @@ namespace CoreGram.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             return Ok(await _repository.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserInfoDto>> GetUser(int id)
         {
             return Ok(await _repository.GetById(id));
         }
@@ -41,9 +42,9 @@ namespace CoreGram.Controllers
         }
         
         [HttpPost]        
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<UserDto>> PostUser(UserDto dto)
         {
-            return Ok(await _repository.Create(user));
+            return Ok(await _repository.Create(dto));
         }
         
         [HttpDelete("{id}")]

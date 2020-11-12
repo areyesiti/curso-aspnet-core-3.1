@@ -1,4 +1,6 @@
-﻿using CoreGram.Data;
+﻿using AutoMapper;
+using CoreGram.Data;
+using CoreGram.Data.Dtos;
 using CoreGram.Data.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
@@ -12,33 +14,49 @@ namespace CoreGram.Repositories
     public class UserRepository
     {
         private readonly DataContext _context;
-        public UserRepository(DataContext context)
+        private readonly IMapper _mapper;
+
+        public UserRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<UserDto>> GetAll()
         {
-            return await _context.Users.ToListAsync();
+
+            var model = await _context.Users.Include(x => x.Profile).ToListAsync();
+            return _mapper.Map<List<User>, List<UserDto>>(model);
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<UserInfoDto> GetById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var model = await _context.Users
+                .Include(x => x.Profile)
+                .Where(x => x.Id == id).FirstOrDefaultAsync();
 
-            if (user == null)
+            if (model == null)
             {
                 throw new Exception("No se ha encontrado el usuario con id: " + id);
             }
 
-            return user;
+            return _mapper.Map<UserInfoDto>(model);            
         }
 
-        public async Task<User> Create(User user)
+        public async Task<UserDto> Create(UserDto dto)
         {
-            _context.Users.Add(user);
+            var model = _mapper.Map<User>(dto);
+            _context.Users.Add(model);
             await _context.SaveChangesAsync();
-            return await GetById(user.Id);            
+
+            var result = await _context.Users.FindAsync(model);
+
+            if (result == null)
+            {
+                throw new Exception("No se ha encontrado el usuario con id: " + model.Id);
+            }
+
+            return _mapper.Map<UserDto>(result);                    
         }
 
         public async Task<User> Update(int id, User user)
