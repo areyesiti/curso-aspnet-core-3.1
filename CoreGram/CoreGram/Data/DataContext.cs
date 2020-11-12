@@ -18,12 +18,26 @@ namespace CoreGram.Data
         {
 
             modelBuilder.Entity<User>().Property("Id").IsRequired();
-            modelBuilder.Entity<User>().ToTable("Users").HasKey(x => x.Id);            
+            modelBuilder.Entity<User>().ToTable("Users").HasKey(x => x.Id);
             modelBuilder.Entity<User>()
                 .HasOne<UserProfile>(x => x.Profile)
                 .WithOne(x => x.User)
-                .HasForeignKey<UserProfile>(x => x.Id)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey<UserProfile>(x => x.Id);
+
+            modelBuilder.Entity<Follower>().HasKey(x => new { x.UserId, x.FollowerId });
+
+            modelBuilder.Entity<Follower>()
+                .HasOne<User>(x => x.UserFollower)
+                .WithMany(x => x.UsersFollowers)
+                .HasForeignKey(x => x.FollowerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Follower>()
+                .HasOne<User>(x => x.UserFollowing)
+                .WithMany(x => x.UsersFollowings)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
         public DbSet<User> Users {get; set; }
