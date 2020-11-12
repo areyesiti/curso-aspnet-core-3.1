@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CoreGram.Data;
+using CoreGram.Registers;
 using CoreGram.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,36 +42,13 @@ namespace CoreGram
                     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Local;
                 });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "CoreGram",
-                    Description = "Curso Net Core 3",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Alberto Reyes",
-                        Email = string.Empty,
-                        Url = new Uri("https://twitter.com/spboyer"),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Use under LICX",
-                        Url = new Uri("https://example.com/license"),
-                    }
-                });
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
-
             services.AddControllers();
 
-            services.AddTransient(typeof(UserRepository));
-            services.AddTransient(typeof(UserProfileRepository));
+            //services.AddTransient(typeof(UserRepository));
+            //services.AddTransient(typeof(UserProfileRepository));
+
+            services.addCustomRegisters();
+            services.addSwaggerRegisters();
 
         }
 
