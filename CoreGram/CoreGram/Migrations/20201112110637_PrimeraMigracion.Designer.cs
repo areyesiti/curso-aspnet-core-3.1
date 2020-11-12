@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreGram.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201111121608_PrimeraMigracion")]
+    [Migration("20201112110637_PrimeraMigracion")]
     partial class PrimeraMigracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,9 +47,7 @@ namespace CoreGram.Migrations
             modelBuilder.Entity("CoreGram.Data.Models.UserProfile", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
@@ -57,13 +55,7 @@ namespace CoreGram.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("UserProfile");
                 });
@@ -72,7 +64,7 @@ namespace CoreGram.Migrations
                 {
                     b.HasOne("CoreGram.Data.Models.User", "User")
                         .WithOne("Profile")
-                        .HasForeignKey("CoreGram.Data.Models.UserProfile", "UserId")
+                        .HasForeignKey("CoreGram.Data.Models.UserProfile", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

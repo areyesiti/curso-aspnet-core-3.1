@@ -10,7 +10,7 @@ namespace CoreGram.Data.Models
         public int Id { get; set; }
         public string FullName { get; set; }
         public string Image { get; set; }
-        public int UserId { get; set; }
+        //public int UserId { get; set; }
         public virtual User User { get; set; }
     }
 }

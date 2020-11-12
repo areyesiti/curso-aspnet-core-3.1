@@ -37,7 +37,7 @@ namespace CoreGram.Repositories
 
             if (dtoId.Id == 0)
             {
-                dtoId.UserId = userId;
+                //dtoId.UserId = userId;
                 dtoId.Id = userId;
             }
 

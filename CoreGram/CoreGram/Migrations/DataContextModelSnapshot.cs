@@ -45,9 +45,7 @@ namespace CoreGram.Migrations
             modelBuilder.Entity("CoreGram.Data.Models.UserProfile", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
@@ -55,13 +53,7 @@ namespace CoreGram.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("UserProfile");
                 });
@@ -70,7 +62,7 @@ namespace CoreGram.Migrations
                 {
                     b.HasOne("CoreGram.Data.Models.User", "User")
                         .WithOne("Profile")
-                        .HasForeignKey("CoreGram.Data.Models.UserProfile", "UserId")
+                        .HasForeignKey("CoreGram.Data.Models.UserProfile", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
