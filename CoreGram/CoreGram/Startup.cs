@@ -75,21 +75,6 @@ namespace CoreGram
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            //app.Use(async (context, next) =>
-            //{
-            //    Console.WriteLine("Hola desde el primer middleware");
-            //    await next.Invoke();
-            //    Console.WriteLine("Adiós desde el primer middleware");
-            //});
-
-            //app.Use(async (context, next) =>
-            //{
-            //    Console.WriteLine("Hola desde el segundo middleware");
-            //    await next.Invoke();
-            //    Console.WriteLine("Adiós desde el segundo middleware");
-            //});
-
-
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -97,12 +82,6 @@ namespace CoreGram
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
-
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-
 
             app.UseHttpsRedirection();                        
                             

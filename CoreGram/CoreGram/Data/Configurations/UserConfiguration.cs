@@ -8,21 +8,15 @@ using System.Threading.Tasks;
 
 namespace CoreGram.Data.Configurations
 {
-    public class FollowerConfiguration : IEntityTypeConfiguration<Follower>
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Follower> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(x => new { x.UserId, x.FollowerId });
-
-            builder.HasOne<User>(x => x.UserFollower)
-                .WithMany(x => x.UsersFollowers)
-                .HasForeignKey(x => x.FollowerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne<User>(x => x.UserFollowing)
-                .WithMany(x => x.UsersFollowings)
-                .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property("Id").IsRequired();
+            builder.ToTable("Users").HasKey(x => x.Id);
+            builder.HasOne<UserProfile>(x => x.Profile)
+                .WithOne(x => x.User)
+                .HasForeignKey<UserProfile>(x => x.Id);
         }
     }
 }
