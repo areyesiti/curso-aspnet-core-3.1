@@ -2,9 +2,11 @@
 using CoreGram.Data;
 using CoreGram.Data.Dtos;
 using CoreGram.Data.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +40,30 @@ namespace CoreGram.Repositories
 
             _context.SaveChangesAsync();
             return _mapper.Map<LikeDto>(model);
+        }
+
+        public async Task<int> GetByPost(int postId)
+        {
+            // return _context.Likes.Count(x => x.PostId == postId);
+
+            var pTotal = new SqlParameter()
+            {
+                ParameterName = "@total",
+                Direction = ParameterDirection.Output,
+                Value = 0,
+                DbType = DbType.Int32
+            };
+
+            var pPost = new SqlParameter()
+            {
+                ParameterName = "@postId",                
+                Value = postId,
+                DbType = DbType.String
+            };
+
+            _context.Database.ExecuteSqlCommand("sp_GetLikesByPost @postId, @total OUTPUT", pPost, pTotal);
+
+            return Convert.ToInt32(pTotal.Value);
         }
     }
 }

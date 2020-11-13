@@ -20,6 +20,12 @@ namespace CoreGram.Controllers
             _repository = repository;
         }
         
+        [HttpGet("{postId}")]
+        public async Task<ActionResult<int>> GetByPost(int postId)
+        {
+            return Ok(await _repository.GetByPost(postId));
+        }
+
         [HttpPost]
         public async Task<ActionResult<LikeDto>> Like([FromBody] LikeDto dto)
         {
