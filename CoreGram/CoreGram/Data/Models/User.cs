@@ -24,5 +24,6 @@ namespace CoreGram.Data.Models
         public virtual IEnumerable<Follower> UsersFollowers { get; set; }
         public virtual IEnumerable<Follower> UsersFollowings { get; set; }
         public virtual IEnumerable<Post> Posts { get; set; }
+        public virtual IEnumerable<Like> Likes { get; set; }
     }
 }

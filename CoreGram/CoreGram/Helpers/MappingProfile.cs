@@ -28,6 +28,9 @@ namespace CoreGram.Helpers
             CreateMap<Post, PostDto>();
             CreateMap<PostDto, Post>();
 
+            CreateMap<Like, LikeDto>();
+            CreateMap<LikeDto, Like>();
+
         }
     }
 }
