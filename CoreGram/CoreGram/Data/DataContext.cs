@@ -38,11 +38,19 @@ namespace CoreGram.Data
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Post>().ToTable("Posts").HasKey(x => x.Id);
+            modelBuilder.Entity<Post>()
+                .HasOne<User>(x => x.User)
+                .WithMany(x => x.Posts)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
 
         public DbSet<User> Users {get; set; }
         public DbSet<UserProfile> UserProfile { get; set; }
         public DbSet<Follower> Follower { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
     }
 }

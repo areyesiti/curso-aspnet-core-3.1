@@ -23,7 +23,10 @@ namespace CoreGram.Helpers
 
             CreateMap<FollowerDto, Follower>();
             CreateMap<Follower, FollowerDto>();
-            CreateMap<Follower, FollowerInfoDto>();            
+            CreateMap<Follower, FollowerInfoDto>();
+
+            CreateMap<Post, PostDto>();
+            CreateMap<PostDto, Post>();
 
         }
     }

@@ -14,7 +14,8 @@ namespace CoreGram.Registers
         {
             services.AddTransient(typeof(UserRepository));
             services.AddTransient(typeof(UserProfileRepository));
-            services.AddTransient(typeof(FollowerRepository));            
+            services.AddTransient(typeof(FollowerRepository));
+            services.AddTransient(typeof(PostRepository));
 
             return services;
         }
