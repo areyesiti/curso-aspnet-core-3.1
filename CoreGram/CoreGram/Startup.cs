@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CoreGram.Data;
 using CoreGram.Helpers;
+using CoreGram.Middlewares;
 using CoreGram.Registers;
 using CoreGram.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -66,6 +67,28 @@ namespace CoreGram
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseErrorHandlerMiddleware();
+            app.UseRouting();
+
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            //app.Use(async (context, next) =>
+            //{
+            //    Console.WriteLine("Hola desde el primer middleware");
+            //    await next.Invoke();
+            //    Console.WriteLine("Adiós desde el primer middleware");
+            //});
+
+            //app.Use(async (context, next) =>
+            //{
+            //    Console.WriteLine("Hola desde el segundo middleware");
+            //    await next.Invoke();
+            //    Console.WriteLine("Adiós desde el segundo middleware");
+            //});
+
 
             app.UseSwagger();
 
@@ -75,18 +98,13 @@ namespace CoreGram
                 c.RoutePrefix = string.Empty;
             });
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
 
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            app.UseHttpsRedirection();                        
                             
             app.UseEndpoints(endpoints =>
             {

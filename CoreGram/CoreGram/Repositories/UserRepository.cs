@@ -2,6 +2,7 @@
 using CoreGram.Data;
 using CoreGram.Data.Dtos;
 using CoreGram.Data.Models;
+using CoreGram.Helpers;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,7 +38,7 @@ namespace CoreGram.Repositories
 
             if (model == null)
             {
-                throw new Exception("No se ha encontrado el usuario con id: " + id);
+                throw new NotFoundException("No se ha encontrado el usuario con id: " + id);
             }
 
             return _mapper.Map<UserInfoDto>(model);            
@@ -53,7 +54,7 @@ namespace CoreGram.Repositories
 
             if (result == null)
             {
-                throw new Exception("No se ha encontrado el usuario con id: " + model.Id);
+                throw new NotFoundException("No se ha encontrado el usuario con id: " + model.Id);
             }
 
             return _mapper.Map<UserDto>(result);                    
@@ -65,7 +66,7 @@ namespace CoreGram.Repositories
 
             if (id != model.Id)
             {
-                throw new Exception("El id no coincide");
+                throw new UnprocessableEntityException("El id no coincide");
             }
 
             _context.Entry(model).State = EntityState.Modified;
@@ -79,7 +80,7 @@ namespace CoreGram.Repositories
             var model = await _context.Users.FindAsync(id);
             if (model == null)
             {
-                throw new Exception("No se ha encontrado el usuario");
+                throw new NotFoundException("No se ha encontrado el usuario");
             }
 
             _context.Users.Remove(model);
